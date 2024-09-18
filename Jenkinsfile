@@ -6,17 +6,27 @@ pipeline {
         MY_PASSWORD = "*****"
     }
 
+    options { 
+        timeout(time: 1, unit: 'HOURS')
+        timestamps() 
+    }
+
+    parameters {
+        string(name: "NAME", defaultValue: "M. Jenkins", description: "Product Owner")
+        text(name: "TEXT", defaultValue: "Réunion de concertation", description: "texte de description")
+        booleanParam(name: "DONE", defaultValue: true, description: "true or false")
+        choice(name: "CHOICE", choices: ['design', 'development', 'deployment'], description: "Liste des tâches")
+        password(name: "PASSWORD", description: "Mot de passe de connexion")
+    }
+
     stages {
         stage('build') {
             steps {
-                echo "BRANCH_NAME : ${ env.BRANCH_NAME}"
-                echo "BRANCH_IS_PRIMARY : ${ env.BRANCH_IS_PRIMARY}"
-                echo "CI : ${ env.CI }"
-                echo "BUILD_NUMBER : ${ env.BUILD_NUMBER}"
-                echo "JENKINS_URL : ${ env.JENKINS_URL}"
-                echo "MY_USERNAME : ${ env.MY_USERNAME}"
-                echo "MY_PASSWORD : ${ env.MY_PASSWORD}"
-                sh 'printenv'
+                echo "NAME : ${ NAME}"
+                echo "TEXT : ${ TEXT}"
+                echo "DONE : ${ DONE}"
+                echo "CHOICE : ${ CHOICE}"
+                echo "PASSWORD : ${ PASSWORD}"
             }
         }
     }
